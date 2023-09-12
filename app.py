@@ -1,5 +1,8 @@
-from flask import Flask, jsonify, render_template, request
+from utils.get_json import get_json
+
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 from werkzeug.exceptions import BadRequest
+
 import logging
 
 app = Flask(__name__)
@@ -17,12 +20,15 @@ def hello_world():
 def process_json():
     try:
         uploaded_file = request.files.getlist('json_files')
+        json_data_list = []
+
         for file in uploaded_file:
             logger.info(f"Processing file: {file.filename}")
 
-            json_data = file.read()
+            json_data_list.append(uploaded_file)
 
-        return jsonify({'message': 'File successfully processed'})
+        get_json(json_data_list)
+        return redirect(url_for('success_page'))
 
     except BadRequest:
         return jsonify({'message': 'Bad request'})
@@ -31,6 +37,20 @@ def process_json():
     except Exception as e:
         logger.error(f"Error processing file: {str(e)}")
         return jsonify({'message': f"{e}"})
+
+
+@app.route('/success_page')
+def success_page():
+    try:
+        return render_template('success.html')
+    except Exception as e:
+        logger.error(f"Error processing file: {str(e)}")
+        return jsonify({'message': f"{e}"})
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
 
 
 if __name__ == '__main__':

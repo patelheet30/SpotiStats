@@ -87,10 +87,13 @@ h1 {
     text-align: center;
     height: 200px;
     width: 650px;
+    transition: 0.15s ease-in-out;
+    cursor: pointer;
 }
 
 #drop-area:hover{
-    border: 5px dashed #888;
-    transition: 0.2s ease-in-out;
+    border: 5px dashed #65d46e;
 }
+
+
 

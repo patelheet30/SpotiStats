@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('file-input');
+
 
     dropArea.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -8,6 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
     dropArea.addEventListener('drop', (e) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
+        sendFilesToServer(files);
+    });
+
+    dropArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        const files = e.target.files;
         sendFilesToServer(files);
     });
 

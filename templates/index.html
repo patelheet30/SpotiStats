@@ -24,6 +24,7 @@
     <div id="drop-area">
         <img src="{{ url_for('static', filename='assets/upload.svg') }}" alt="Upload Icon" width="40" height="40">
         <p class="drop-area-text">Drop your file or click to upload</p>
+        <input type="file" id="file-input" style="display: none;" accept=".json" multiple>
     </div>
 
     <script src="{{ url_for('static', filename='upload.js') }}"></script>
