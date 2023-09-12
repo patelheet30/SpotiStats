@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Spotify Data Viewer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Spotify Data Viewer</h1>
+    <div id="info">
+        <p>An open source alternative to many Spotify data viewers like Stats.fm, Stats for Spotify</p>
+    </div>
+    <div id="icons">
+        <div class="tooltip-container">
+            <img src="{{ url_for('static', filename='assets/info.svg') }}" alt="Info Logo" width="40" height="40" class="hover-enlarge">
+            <span class="tooltip-text">Info</span>
+        </div>
+        <div class="tooltip-container">
+            <a href="https://open.spotify.com/user/heetkpatel?si=381f10c23e4f4616" target="_blank">
+                <img src="{{ url_for('static', filename='assets/spotify.svg') }}" alt="Spotify Logo" width="37" height="37" class="hover-enlarge">
+            </a>
+            <span class="tooltip-text">Spotify</span>
+        </div>
+    </div>
+    <div id="drop-area">
+        <img src="{{ url_for('static', filename='assets/upload.svg') }}" alt="Upload Icon" width="40" height="40">
+        <p class="drop-area-text">Drop your file or click to upload</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='upload.js') }}"></script>
+</body>
+</html>

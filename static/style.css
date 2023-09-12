@@ -1,0 +1,96 @@
+@import url(https://db.onlinewebfonts.com/c/01173b246d9d9ea808ea75a26b3b61bb?family=CircularSpotifyTxT-Black);
+
+body {
+    color: #ffffff;
+    background-color: #121212;
+}
+
+h1 {
+    font-size: 2.6em;
+    font-family: "CircularSpotifyTxT-Black", Circular, sans-serif;
+    margin: 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#info{
+    font-size: 1.4em;
+    font-family: "CircularSpotifyTxT-Black", Circular, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 5px auto;
+    max-width: 575px;
+}
+
+#icons {
+    font-size: 1.4em;
+    font-family: "CircularSpotifyTxT-Black", Circular, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin: 10px;
+}
+
+/* Tooltip text */
+.tooltip-text {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Tooltip text on hover */
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Image hover effect */
+.hover-enlarge:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+#drop-area{
+    border: 5px dashed #ccc;
+    border-radius: 15px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: "CircularSpotifyTxT-Black", Circular, sans-serif;
+    font-size: 1.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 200px;
+    width: 650px;
+}
+
+#drop-area:hover{
+    border: 5px dashed #888;
+    transition: 0.2s ease-in-out;
+}
+
