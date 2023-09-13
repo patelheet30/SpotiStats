@@ -3,6 +3,11 @@
 <head>
     <title>Spotify Data Viewer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Spotify Data Viewer">
+    <meta property="og:description" content="An open source alternative to many Spotify data viewers like Stats.fm, Stats for Spotify">
+    <meta property="og:url" content="https://spotifystats.fly.dev/">
+
 </head>
 <body>
     <h1 id="h1-text">Spotify Data Viewer</h1>
@@ -11,7 +16,9 @@
             <p>An open source alternative to many Spotify data viewers like Stats.fm, Stats for Spotify</p>
         </div>
         <div id="my-profile">
-            <img id="circle-pfp" src="{{ url_for('static', filename='assets/patelheet30pfp.webp') }}" alt="Heet Patel's Logo" width="25" height="25">
+            <a href="https://www.github.com/patelheet30" target="_blank">
+                <img id="circle-pfp" src="{{ url_for('static', filename='assets/patelheet30pfp.webp') }}" alt="Heet Patel's Logo" width="25" height="25">
+            </a>
             <p>Heet Patel (patelheet30)</p>
         </div>
     </div>
@@ -59,43 +66,7 @@
         </div>
     </div>
 
-    <script>
-        window.onload = () => {
-
-            const privacyBannerAcknowledged = document.cookie.split(';').some((item) => item.trim().startsWith('privacy-banner-accepted='));
-            const privacyBanner = document.getElementById('privacy-banner-container');
-            const dismissButton = document.getElementById('close-privacy');
-            const necessaryButton = document.getElementById('accept-necessary');
-
-            if (!privacyBannerAcknowledged) {
-                privacyBanner.style.animationDuration = '1.5s';
-                privacyBanner.classList.add('slide-up');
-                privacyBanner.style.animationFillMode = 'forwards';
-            } else {
-                privacyBanner.style.display = 'none';
-            }
-
-            const closeBanner = () => {
-                const date = new Date();
-                date.setDate(date.getDate() + 7);
-                document.cookie = `privacy-banner-accepted=true; expires=${date.toUTCString()};path=/`;
-                let fadeEffect = setInterval(() => {
-                    if (!privacyBanner.style.opacity) {
-                        privacyBanner.style.opacity = 1;
-                    }
-                    if (privacyBanner.style.opacity > 0) {
-                        privacyBanner.style.opacity -= 0.1;
-                    } else {
-                        clearInterval(fadeEffect);
-                        privacyBanner.style.display = 'none';
-                    }
-                }, 30);
-            };
-
-            dismissButton.onclick = closeBanner;
-            necessaryButton.onclick = closeBanner;
-        };
-    </script>
+    <script src="{{ url_for('static', filename='js/accept-cookies.js') }}"></script>
     <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
 </body>
 </html>
