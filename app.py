@@ -48,7 +48,7 @@ def process_json():
         return jsonify({'message': 'Error processing file'})
     except Exception as e:
         logger.error(f"Generic exception: {str(e)}")
-        return jsonify({'message': f"{e}"})
+        return jsonify({'message': "Generic exception"})
 
 
 @app.route('/success_page')
@@ -60,7 +60,7 @@ def success_page():
         return render_template('success.html')
     except Exception as e:
         logger.error(f"Error processing file: {str(e)}")
-        return jsonify({'message': f"{e}"})
+        return jsonify({'message': "Error processing file"})
 
 
 @app.route('/privacy')
@@ -69,4 +69,4 @@ def privacy():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
