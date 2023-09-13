@@ -1,0 +1,82 @@
+@font-face {
+    font-family: "CircularSpotifyNormal";
+    src: url('/static/fonts/CircularStd-Black.otf');
+    format('opentype');
+}
+@font-face {
+    font-family: "CircularSpotifyBold";
+    src: url('/static/fonts/CircularStd-Bold.otf');
+    format('opentype');
+}
+@font-face {
+    font-family: "CircularSpotifyBook";
+    src: url('/static/fonts/CircularStd-Book.otf');
+    format('opentype');
+}
+@font-face {
+    font-family: "CircularSpotifyLight";
+    src: url('/static/fonts/CircularStd-Light.otf');
+    format('opentype');
+}
+@font-face {
+    font-family: "CircularSpotifyMedium";
+    src: url('/static/fonts/CircularStd-Medium.otf');
+    format('opentype');
+}
+
+body {
+    color: #eeeeee;
+    background-color: #121212;
+}
+
+h1 {
+    font-size: 2.6em;
+    font-family: "CircularSpotifyBold", Circular, sans-serif;
+    display: flex;
+    justify-content: center;
+    margin: 50px auto 25px;
+    text-align: left;
+    max-width: 575px;
+}
+
+#main-class{
+    font-size: medium;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 5px auto 1px;
+    text-align: left;
+    max-width: 575px;
+}
+
+#main-class h2{
+    font-size: 1.6em;
+    font-family: "CircularSpotifyBold", Circular, sans-serif;
+    margin-bottom: 0;
+}
+
+#main-class p {
+    font-size: medium;
+    font-family: "CircularSpotifyLight", Circular, sans-serif;
+    margin-bottom: 0;
+}
+
+#main-class a{
+    font-size: medium;
+    font-family: "CircularSpotifyBook", Circular, sans-serif;
+    margin-bottom: 0;
+    color: #65d46e;
+    text-decoration: none;
+}
+
+#main-class a:hover {
+    color: #1db954;
+    text-decoration: underline;
+}
+
+#highlight{
+    font-size: medium;
+    font-family: "CircularSpotifyBold", Circular, sans-serif;
+    margin-bottom: 0;
+    text-decoration: none;
+}
