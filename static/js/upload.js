@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => {
             if (response.ok) {
                 console.log('JSON files sent successfully to the server.');
+                window.location.href = "/success_page";
             } else {
                 console.error('Error sending JSON files to the server.');
             }

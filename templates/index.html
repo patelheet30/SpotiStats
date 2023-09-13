@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Spotify Data Viewer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
     <h1>Spotify Data Viewer</h1>
@@ -27,6 +27,34 @@
         <input type="file" id="file-input" style="display: none;" accept=".json" multiple>
     </div>
 
-    <script src="{{ url_for('static', filename='upload.js') }}"></script>
+    <div id="privacy-banner-container">
+        <div id="privacy-banner" >
+            <div>
+                View our <a href="/privacy">Privacy</a> page
+                <button id="close-privacy">X</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+
+            const privacyBannerAcknowledged = document.cookie.split(';').some((item) => item.trim().startsWith('privacy-banner-accepted='));
+            const privacyBanner = document.getElementById('privacy-banner-container');
+            const dismissButton = document.getElementById('close-privacy');
+
+            if (!privacyBannerAcknowledged) {
+                privacyBanner.style.display = 'block';
+            }
+
+            dismissButton.onclick = () => {
+                const date = new Date();
+                date.setFullYear(date.getFullYear() + 1);
+                document.cookie = `privacy-banner-accepted=true; expires=${date.toUTCString()};path=/`;
+                privacyBanner.style.display = 'none';
+            };
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
 </body>
 </html>
