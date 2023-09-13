@@ -4,9 +4,10 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, s
 from werkzeug.exceptions import BadRequest
 
 import logging
+import os
 
 app = Flask(__name__)
-app.secret_key = 'some_secret_key'
+app.secret_key = os.getenv('APP_SECRET_KEY')
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - SpotifyStats - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
