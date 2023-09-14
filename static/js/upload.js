@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
 
-            if (file.type === 'application/json') {
+            if (file.type === 'application/json' || file.type === 'application/zip') {
                 formData.append('json_files', file);
             } else {
-                alert('Please drop only JSON files.');
+                alert('Please drop only JSON or ZIP files.');
                 return;
             }
         }
@@ -39,12 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'POST',
             body: formData,
         })
-        .then(response => {
-            if (response.ok) {
-                console.log('JSON files sent successfully to the server.');
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Files sent successfully to the server.');
                 window.location.href = "/success_page";
             } else {
-                console.error('Error sending JSON files to the server.');
+                alert(data.message);
             }
         })
         .catch(error => {

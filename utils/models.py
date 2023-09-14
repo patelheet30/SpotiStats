@@ -1,17 +1,13 @@
 from dataclasses import dataclass
 
-@dataclass
-class Media:
-    pass
 
 @dataclass
 class User:
-    username: str
-    image_URL: str
-    large_image_URL: str
-    email: str
-    followers: int
-    following: int
-    creation_date: str
-    country: str
-
+    username: str = None
+    email: str = None
+    followers: int = None
+    following: int = None
+    creation_date: str = None
+    country: str = None
+    gender: str = None
+    birth_date: str = None

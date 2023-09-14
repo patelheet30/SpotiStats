@@ -1,32 +1,8 @@
+@import "fonts.css";
+
 body {
     color: #eeeeee;
     background-color: #121212;
-}
-
-@font-face {
-    font-family: "CircularSpotifyNormal";
-    src: url('/static/fonts/CircularStd-Black.otf');
-    format('opentype');
-}
-@font-face {
-    font-family: "CircularSpotifyBold";
-    src: url('/static/fonts/CircularStd-Bold.otf');
-    format('opentype');
-}
-@font-face {
-    font-family: "CircularSpotifyBook";
-    src: url('/static/fonts/CircularStd-Book.otf');
-    format('opentype');
-}
-@font-face {
-    font-family: "CircularSpotifyLight";
-    src: url('/static/fonts/CircularStd-Light.otf');
-    format('opentype');
-}
-@font-face {
-    font-family: "CircularSpotifyMedium";
-    src: url('/static/fonts/CircularStd-Medium.otf');
-    format('opentype');
 }
 
 #h1-text {

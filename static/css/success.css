@@ -1,0 +1,100 @@
+@import "fonts.css";
+
+body {
+    overflow: hidden;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: stretch;
+    background-color: rgb(0,0,0);
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgb(18, 18, 18);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(58, 58, 58);
+    border-radius: 10px;
+}
+
+.main-container {
+    width: 100vw;
+    display: flex;
+    padding: 10px;
+    align-items: stretch;
+}
+
+.right-container {
+    flex: 3;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: rgb(18, 18, 18);
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.sub-section1 {
+    background-color: rgb(18, 18, 18);
+    height: 30%;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.sub-section2 {
+    box-sizing: border-box;
+    background-color: rgb(18, 18, 18);
+    border-radius: 10px;
+    height: 70%;
+    overflow-y: auto;
+}
+
+.left-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.content{
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.subsection1-title{
+    font-family: 'CircularSpotifyBold', Circular, sans-serif;
+    font-size: 1.6em;
+    color: rgb(255, 255, 255);
+    position: sticky;
+    top: 0;
+    background-color: rgb(18, 18, 18);
+    padding: 10px;
+    margin-left: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info svg{
+    width: 25px;
+    height: 25px;
+}
+
+.user-info p {
+    font-family: 'CircularSpotifyBold', Circular, sans-serif;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    margin-left: 10px;
+}
