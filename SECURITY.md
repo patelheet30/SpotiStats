@@ -2,7 +2,9 @@
 
 ## Supported Versions
 
-Awaiting full release
+Version | Secure
+|-------|------|
+v0.0.1 | ✅
 
 
 ## Reporting a Vulnerability
