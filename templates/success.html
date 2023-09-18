@@ -7,11 +7,11 @@
 <body>
 <div class="main-container">
     <div class="left-container">
-        <div class="sub-section1">
-            <div class="subsection1-title">
+        <div class="scroll-wrapper sub-section1">
+            <div class="title-for-subsections">
                 User-Info
             </div>
-            <div class="content">
+            <div class="content-section1">
 
                 <div class="main-content-section1">
                     <div class="user-info">
@@ -123,13 +123,28 @@
                 </div>
             </div>
         </div>
-        <div class="sub-section2">
-            <p>Testing 2</p>
+        <div class="scroll-wrapper sub-section2">
+            <div class="title-for-subsections">Your Data</div>
+            <div class="button-wrapper">
+                <div class="button reset" id="reset" style="visibility: none">X</div>
+                <div class="button" id="button1">
+                    Artists
+                </div>
+                <div class="button" id="button2">
+                    Albums
+                </div>
+                <div class="button" id="button3">
+                    Genres
+                </div>
+            </div>
+            <div class="content-section2" id="content-section2"></div>
         </div>
     </div>
     <div class="right-container">
         <p>Testing 3</p>
     </div>
 </div>
+
+<script src="{{ url_for('static', filename="js/button-listener.js") }}"></script>
 </body>
 </html>
