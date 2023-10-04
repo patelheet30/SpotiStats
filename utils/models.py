@@ -11,3 +11,13 @@ class User:
     country: str = None
     gender: str = None
     birth_date: str = None
+
+
+@dataclass
+class Song:
+    name: str = None
+    artist: str = None
+    album: str = None
+    uri: str = None
+    duration: str = None
+    time: str = None

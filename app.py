@@ -1,9 +1,11 @@
 from utils.get_json import get_json
 from utils.user_info import get_user_info
+from utils.parsers import convert_minutes
 
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 from werkzeug.exceptions import BadRequest
 from werkzeug.utils import secure_filename
+from flask_session import Session
 
 import logging
 import os
@@ -14,6 +16,8 @@ import tempfile
 
 app = Flask(__name__)
 app.secret_key = os.getenv('APP_SECRET_KEY')
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - SpotifyStats - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -37,8 +41,6 @@ def process_json():
                 file_content = json.loads(file.read().decode('utf-8'))
                 json_data_list[file.filename] = file_content
                 logger.info(f"Name of File: {file.filename}")
-            elif '.zip' in file.filename and file.filename != 'my_spotify_data.zip':
-                return jsonify({'success': False, 'message': 'Please upload the zip file you downloaded from Spotify'})
             elif '.zip' in file.filename:
                 filename = secure_filename(file.filename)
                 file.save(filename)
@@ -73,8 +75,7 @@ def process_json():
                         logger.info(f"Removing directory: {extracted_file}")
                         shutil.rmtree(extracted_file)
 
-        user = get_json(json_data_list)
-        session['user-info'] = user
+        session['user-info'] = get_json(json_data_list)
 
         session['data_submitted'] = True
 
@@ -95,11 +96,40 @@ def process_json():
 def success_page():
     try:
         if 'data_submitted' not in session:
+            session.pop('user-info', None)
             return redirect(url_for('hello_world'))
-        return render_template('success.html', user=get_user_info(session['user-info']))
+        return render_template('success.html', user=get_user_info(session['user-info'][0]))
     except Exception as e:
+        print(e)
         logger.error(f"Error processing file: {str(e)}")
         return jsonify({'message': "Error processing file"})
+
+
+@app.route('/top-artists', methods=['GET'])
+def top_artists():
+    all_the_songs = session['user-info'][1]
+    num_artists = request.args.get('num_artists')
+    if not num_artists.isnumeric() or int(num_artists) <= 0:
+        return jsonify({'Error': 'Invalid value for num_artists'}), 400
+
+    # create a dictionary with artist names as keys and their total durations as the values
+    duration_dict = {}
+    for song in all_the_songs:
+        if song.artist in duration_dict:
+            duration_dict[song.artist] += int(song.duration) / 60000
+        else:
+            duration_dict[song.artist] = int(song.duration) / 60000
+
+    top_artists_by_duration = sorted(duration_dict.items(), key=lambda item: item[1], reverse=True)[:int(num_artists)]
+    top_artists_by_duration_rounded = [(artist, convert_minutes(duration)) for artist, duration in top_artists_by_duration]
+
+    return jsonify(top_artists_by_duration_rounded)
+
+
+@app.route('/songs')
+def songs():
+    songs = [song.to_dict() for song in session['user-info'][1]]
+    return jsonify(songs)
 
 
 @app.route('/privacy')

@@ -50,13 +50,30 @@ Array.from(buttons).forEach(button => {
 });
 
 function updateContentSection() {
-    let content = '';
+    let content = '<br/>';
     for (let id in buttonStates) {
         if (buttonStates[id]) {
-            content += contents[id] + '<br/>'
+            if (id === "button1") { // Assuming the button with this id corresponds to 'Artists'.
+                fetch(`/top-artists?num_artists=50`)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear the content on new fetch
+                    content = '<br/>';
+                    data.forEach(entry => {
+                        let artist = entry[0], duration = entry[1]
+                        content += `${artist} (${duration} total listen duration)<br/>`;
+                    })
+                    // Replace the contents of "content-section2"
+                    document.getElementById("content-section2").innerHTML = content;
+                })
+                .catch((error) => {
+                   console.error('Error:', error);
+                });
+            } else {
+               content += contents[id] + '<br/>';
+            }
         }
     }
-    document.getElementById("content-section2").innerHTML = content;
 }
 
 updateResetButtonVisibility();
