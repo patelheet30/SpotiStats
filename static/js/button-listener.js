@@ -4,102 +4,130 @@ let resetButton = document.getElementById("reset");
 let buttonStates = {
     "button1": false,
     "button2": false,
-    "button3": false
-}
-
-const contents = {
-    "button1": "You clicked on Artists.",
-    "button2": "You clicked on Albums.",
-    "button3": "You clicked on Genres."
 }
 
 function updateResetButtonVisibility() {
-    let buttonSelected = Object.values(buttonStates).includes(true);
-    if(buttonSelected) {
+    let button1 = document.getElementById('button1');
+    let button2 = document.getElementById('button2');
+
+    if (buttonStates["button1"]) {
+        button2.style.display = "none";
         resetButton.style.display = "inline-block";
-    } else {
+    }
+
+    else if (buttonStates["button2"]) {
+        button1.style.display = "none";
+        resetButton.style.display = "inline-block";
+    }
+
+    else {
+        button1.style.display = "inline-block";
+        button2.style.display = "inline-block";
         resetButton.style.display = "none";
     }
 }
 
 Array.from(buttons).forEach(button => {
     button.addEventListener("click", function() {
-        if(this.classList.contains('reset')) {
-            for(let id in buttonStates) {
-                buttonStates[id] = false;
-                document.getElementById(id).style.backgroundColor = "";
-                document.getElementById(id).style.color = "";
+        let id = this.getAttribute('id');
+        if (this.classList.contains('reset')) {
+            for (let key in buttonStates) {
+                buttonStates[key] = false;
+
+                let currentButton = document.getElementById(key);
+                if(currentButton){
+                    currentButton.style.backgroundColor = "";
+                    currentButton.style.color = "";
+                    currentButton.style.display = "inline-block";
+                }
             }
             updateContentSection();
-
-            this.style.display= "none";
+            this.style.display = "none";
         } else {
-            let id = this.getAttribute('id');
-            buttonStates[id] = !buttonStates[id];
-            if(buttonStates[id]) {
+
+            let wasSelected = buttonStates[id];
+
+            for (let key in buttonStates) {
+                buttonStates[key] = false;
+                let currentButton = document.getElementById(key);
+                if(currentButton){
+                    currentButton.style.backgroundColor = "";
+                    currentButton.style.color = "";
+                }
+            }
+
+
+            buttonStates[id] = !wasSelected;
+            if (buttonStates[id]) {
                 this.style.backgroundColor = "#FFFFFFFF";
                 this.style.color = "#232323FF";
-            } else {
-                this.style.backgroundColor = "";
-                this.style.color = "";
             }
-	        updateResetButtonVisibility();
+
+            updateResetButtonVisibility();
             updateContentSection();
         }
     });
 });
 
 function updateContentSection() {
+    console.log("Updating content section");
+    let contentContainer = document.getElementById("content-section2");
+    let loadingElement = document.getElementById("loading");
+
+    if (contentContainer) {
+        contentContainer.innerHTML = '';
+        contentContainer.style.display = "none";
+    }
+
+    let isAnyButtonSelected = false;
+
     for (let id in buttonStates) {
+        console.log(id, buttonStates[id])
         if (buttonStates[id]) {
-            if (id === "button1") {
-
-
-                let contentContainer = document.getElementById("content-section2");
-                let loadingElement = document.getElementById("loading");
-
-
+            isAnyButtonSelected = true;
+            if(contentContainer) {
                 contentContainer.style.display = "block";
-                loadingElement.style.display = "block";
-
-                fetch(`/top-artists?num_artists=15`)
-                .then(response => response.json())
-                .then(data => {
-
-                    let content = '<div>';
-                    data.forEach(entry => {
-                        let artist = entry[0], duration = entry[1], count = entry[2], imageURL = entry[3];
-                        content += `
-                            <button class="artistButton" onclick="buttonClicked(this)">
-                                <div class="buttonInfo">
-                                    <div class="imageContainer">
-                                        <img src="${imageURL}" alt="Artist Image" class="artistImage">
-                                    </div>
-                                    <div class="textContainer">
-                                        <div class="mainName">${artist}</div> 
-                                        <div class="minutesListened">${count} streams • ${duration} streamed</div>
-                                    </div>
-                                </div>
-                            </button>`;
-                    })
-                    content += '</div>';
-
-
-                    contentContainer.innerHTML = content;
-                    loadingElement.style.display = 'none';
-                })
-                .catch((error) => {
-                   console.error('Error:', error);
-                   loadingElement.style.display = "none";
-                });
-            } else {
-
             }
-        } else if (id === "button1") {
 
-            document.getElementById("content-section2").style.display = "none";
+            const content_type = id === "button1" ? "artists" : "albums";
+            fetch('/get_content', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  content_type: content_type,
+                  num_items: '15',
+                }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                if(contentContainer) {
+                    contentContainer.innerHTML = data;
+                }
+                if(loadingElement) {
+                    loadingElement.style.display = "none";
+                }
+            })
+            .catch((error) => {
+               console.error('Error:', error);
+
+               if (loadingElement) {
+                   loadingElement.style.display = "none";
+               }
+            });
         }
     }
+
+    if (loadingElement) {
+        if (isAnyButtonSelected) {
+            loadingElement.style.display = "block";
+        } else {
+            loadingElement.style.display = "none";
+        }
+    }
+
 }
 
 function buttonClicked(button) {

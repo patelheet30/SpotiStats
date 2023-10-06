@@ -1,0 +1,13 @@
+{% for item in items %}
+    <button class="artistButton" onclick="buttonClicked(this)">
+        <div class="buttonInfo">
+            <div class="imageContainer">
+                <img src="{{ item[3] }}" alt="Artist Image" class="artistImage">
+            </div>
+            <div class="textContainer">
+                <div class="mainName">{{ item[0] }}</div>
+                <div class="minutesListened">{{ item[2] }} streams • {{ item[1] }} streamed</div>
+            </div>
+        </div>
+    </button>
+{% endfor %}

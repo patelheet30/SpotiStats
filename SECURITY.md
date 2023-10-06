@@ -2,10 +2,9 @@
 
 ## Supported Versions
 
-Version | Secure
-|-------|------|
-v0.0.1 | ✅
-
+| Version | Secure |
+|---------|--------|
+| v0.0.1  | ✅      |
 
 ## Reporting a Vulnerability
 

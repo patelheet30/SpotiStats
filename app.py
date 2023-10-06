@@ -114,42 +114,72 @@ def success_page():
         return jsonify({'message': "Error processing file"})
 
 
-@app.route('/top-artists', methods=['GET'])
-def top_artists():
+@app.route('/get_content', methods=['POST'])
+def get_content():
+    content_type = request.json.get('content_type', '')
+    if content_type not in ['artists', 'albums']:
+        return jsonify({ 'Error': 'Invalid value for content_type' }), 400
+
+    num_items = request.json.get('num_items', '')
+    if not num_items.isnumeric() or int(num_items) <= 0:
+        return jsonify({ 'Error': 'Invalid value for num_items' }), 400
+
+    num_items = int(num_items)
     all_the_songs = session['user-info'][1]
-    num_artists = request.args.get('num_artists')
-    if not num_artists.isnumeric() or int(num_artists) <= 0:
-        return jsonify({'Error': 'Invalid value for num_artists'}), 400
-
     duration_dict = {}
-    for song in all_the_songs:
-        if song.artist in duration_dict:
-            duration_dict[song.artist]['duration'] += int(song.duration) / 60000
-            duration_dict[song.artist]['count'] += 1
-        else:
-            duration_dict[song.artist] = {'duration': int(song.duration) / 60000, 'count': 1}
 
-    top_artists_by_duration = sorted(duration_dict.items(), key=lambda item: item[1]['duration'], reverse=True)[
-                              :int(num_artists)]
-
-    top_artists_by_duration_rounded = [(artist, convert_minutes(data['duration']), data['count']) for artist, data in
-                                       top_artists_by_duration]
-
-    top_artists_with_images = []
-    for artist in top_artists_by_duration_rounded:
-        results = sp.search(q=artist[0], type='artist')
-
-        if results['artists']['items']:
-            artist_id = results['artists']['items'][0]['id']
-            artist_info = sp.artist(artist_id)
-            if artist_info['images']:
-                artist_image = artist_info['images'][0]['url']
-                top_artists_with_images.append((artist[0], artist[1], artist[2], artist_image))
+    if content_type == 'artists':
+        for song in all_the_songs:
+            if song.artist in duration_dict:
+                duration_dict[song.artist]['duration'] += int(song.duration) / 60000
+                duration_dict[song.artist]['count'] += 1
             else:
-                top_artists_with_images.append((artist[0], artist[1], artist[2], ''))
+                duration_dict[song.artist] = { 'duration': int(song.duration) / 60000, 'count': 1 }
 
+        top_items_by_duration = sorted(duration_dict.items(), key=lambda item: item[1]['duration'], reverse=True)[
+                                :num_items]
+        top_items_by_duration_rounded = [(item, convert_minutes(data['duration']), data['count']) for item, data in
+                                         top_items_by_duration]
 
-    return jsonify(top_artists_with_images)
+        top_items_with_images = []
+        for item in top_items_by_duration_rounded:
+            results = sp.search(q=item[0], type='artist')
+            if results['artists']['items']:
+                item_id = results['artists']['items'][0]['id']
+                item_info = sp.artist(item_id)
+                if item_info['images']:
+                    item_image = item_info['images'][0]['url']
+                    top_items_with_images.append((item[0], item[1], item[2], item_image))
+                else:
+                    top_items_with_images.append((item[0], item[1], item[2], ''))
+
+    else:
+        for song in all_the_songs:
+            if song.album in duration_dict:
+                duration_dict[song.album]['duration'] += int(song.duration) / 60000
+                duration_dict[song.album]['count'] += 1
+            else:
+                duration_dict[song.album] = { 'duration': int(song.duration) / 60000, 'count': 1 }
+
+        top_items_by_duration = sorted(duration_dict.items(), key=lambda item: item[1]['duration'], reverse=True)[
+                                :num_items]
+        top_items_by_duration_rounded = [(item, convert_minutes(data['duration']), data['count']) for item, data in
+                                         top_items_by_duration]
+
+        top_items_with_images = []
+        for item in top_items_by_duration_rounded:
+            results = sp.search(q=item[0], type='album')
+            if results['albums']['items']:
+                item_id = results['albums']['items'][0]['id']
+                item_info = sp.album(item_id)
+                if item_info['images']:
+                    item_image = item_info['images'][0]['url']
+                    top_items_with_images.append((item[0], item[1], item[2], item_image))
+                else:
+                    top_items_with_images.append((item[0], item[1], item[2], ''))
+
+    return render_template('items.html', items=top_items_with_images)
+
 
 
 @app.route('/songs')

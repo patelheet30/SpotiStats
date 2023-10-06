@@ -118,7 +118,7 @@ body {
     color: rgb(255, 255, 255);
 }
 
-.artistButton, .clicked {
+.artistButton, .albumButton, .clicked {
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -153,7 +153,7 @@ body {
     margin-left: 10px;
 }
 
-.artistButton:hover {
+.artistButton:hover, .albumButton:hover {
     background-color: rgb(26, 26, 26);
     border-radius: 5px;
 }
@@ -167,7 +167,7 @@ body {
     background-color: rgb(43, 43, 43);
 }
 
-.artistImage {
+.artistImage, .albumImage {
     width: 60px;
     height: 60px;
     border-radius: 5px;
@@ -191,6 +191,8 @@ body {
     display: none;
     font-size: 20px;
     color: #fff;
+    font-family: 'CircularSpotifyMedium', Circular, sans-serif;
+    margin-left: 10px;
 }
 
 .dots span {
