@@ -50,30 +50,65 @@ Array.from(buttons).forEach(button => {
 });
 
 function updateContentSection() {
-    let content = '<br/>';
     for (let id in buttonStates) {
         if (buttonStates[id]) {
-            if (id === "button1") { // Assuming the button with this id corresponds to 'Artists'.
-                fetch(`/top-artists?num_artists=50`)
+            if (id === "button1") {
+
+
+                let contentContainer = document.getElementById("content-section2");
+                let loadingElement = document.getElementById("loading");
+
+
+                contentContainer.style.display = "block";
+                loadingElement.style.display = "block";
+
+                fetch(`/top-artists?num_artists=15`)
                 .then(response => response.json())
                 .then(data => {
-                    // Clear the content on new fetch
-                    content = '<br/>';
+
+                    let content = '<div>';
                     data.forEach(entry => {
-                        let artist = entry[0], duration = entry[1]
-                        content += `${artist} (${duration} total listen duration)<br/>`;
+                        let artist = entry[0], duration = entry[1], count = entry[2], imageURL = entry[3];
+                        content += `
+                            <button class="artistButton" onclick="buttonClicked(this)">
+                                <div class="buttonInfo">
+                                    <div class="imageContainer">
+                                        <img src="${imageURL}" alt="Artist Image" class="artistImage">
+                                    </div>
+                                    <div class="textContainer">
+                                        <div class="mainName">${artist}</div> 
+                                        <div class="minutesListened">${count} streams • ${duration} streamed</div>
+                                    </div>
+                                </div>
+                            </button>`;
                     })
-                    // Replace the contents of "content-section2"
-                    document.getElementById("content-section2").innerHTML = content;
+                    content += '</div>';
+
+
+                    contentContainer.innerHTML = content;
+                    loadingElement.style.display = 'none';
                 })
                 .catch((error) => {
                    console.error('Error:', error);
+                   loadingElement.style.display = "none";
                 });
             } else {
-               content += contents[id] + '<br/>';
+
             }
+        } else if (id === "button1") {
+
+            document.getElementById("content-section2").style.display = "none";
         }
     }
+}
+
+function buttonClicked(button) {
+    const buttons = document.getElementsByClassName("artistButton");
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('clicked');
+    }
+    button.classList.toggle('clicked')
 }
 
 updateResetButtonVisibility();

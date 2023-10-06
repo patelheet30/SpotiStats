@@ -5,6 +5,11 @@ body {
     background-color: #121212;
 }
 
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
 #h1-text {
     font-size: 2.6em;
     font-family: "CircularSpotifyBold", Circular, sans-serif;
@@ -113,6 +118,7 @@ body {
 #privacy-banner-container {
     position: fixed;
     bottom: -200px;
+    width: 100%;
 }
 
 #privacy-banner {

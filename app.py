@@ -6,6 +6,8 @@ from flask import Flask, jsonify, render_template, request, redirect, url_for, s
 from werkzeug.exceptions import BadRequest
 from werkzeug.utils import secure_filename
 from flask_session import Session
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
 import logging
 import os
@@ -16,6 +18,13 @@ import tempfile
 
 app = Flask(__name__)
 app.secret_key = os.getenv('APP_SECRET_KEY')
+
+client_id = os.getenv('CLIENT_ID')
+client_secret = os.getenv('CLIENT_SECRET')
+
+client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
@@ -26,6 +35,7 @@ logger = logging.getLogger(__name__)
 @app.route('/')
 def hello_world():
     session.pop('data_submitted', None)
+    session.pop('user-info', None)
     return render_template('index.html')
 
 
@@ -96,7 +106,6 @@ def process_json():
 def success_page():
     try:
         if 'data_submitted' not in session:
-            session.pop('user-info', None)
             return redirect(url_for('hello_world'))
         return render_template('success.html', user=get_user_info(session['user-info'][0]))
     except Exception as e:
@@ -112,18 +121,35 @@ def top_artists():
     if not num_artists.isnumeric() or int(num_artists) <= 0:
         return jsonify({'Error': 'Invalid value for num_artists'}), 400
 
-    # create a dictionary with artist names as keys and their total durations as the values
     duration_dict = {}
     for song in all_the_songs:
         if song.artist in duration_dict:
-            duration_dict[song.artist] += int(song.duration) / 60000
+            duration_dict[song.artist]['duration'] += int(song.duration) / 60000
+            duration_dict[song.artist]['count'] += 1
         else:
-            duration_dict[song.artist] = int(song.duration) / 60000
+            duration_dict[song.artist] = {'duration': int(song.duration) / 60000, 'count': 1}
 
-    top_artists_by_duration = sorted(duration_dict.items(), key=lambda item: item[1], reverse=True)[:int(num_artists)]
-    top_artists_by_duration_rounded = [(artist, convert_minutes(duration)) for artist, duration in top_artists_by_duration]
+    top_artists_by_duration = sorted(duration_dict.items(), key=lambda item: item[1]['duration'], reverse=True)[
+                              :int(num_artists)]
 
-    return jsonify(top_artists_by_duration_rounded)
+    top_artists_by_duration_rounded = [(artist, convert_minutes(data['duration']), data['count']) for artist, data in
+                                       top_artists_by_duration]
+
+    top_artists_with_images = []
+    for artist in top_artists_by_duration_rounded:
+        results = sp.search(q=artist[0], type='artist')
+
+        if results['artists']['items']:
+            artist_id = results['artists']['items'][0]['id']
+            artist_info = sp.artist(artist_id)
+            if artist_info['images']:
+                artist_image = artist_info['images'][0]['url']
+                top_artists_with_images.append((artist[0], artist[1], artist[2], artist_image))
+            else:
+                top_artists_with_images.append((artist[0], artist[1], artist[2], ''))
+
+
+    return jsonify(top_artists_with_images)
 
 
 @app.route('/songs')
