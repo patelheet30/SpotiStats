@@ -1,0 +1,25 @@
+{% if items is defined and items|length > 3 %}
+    {% set artist_image = items[3] %}
+    {% set artist_name = items[0] %}
+    {% set minutes_streamed = items[1] %}
+    {% set num_streams = items[2] %}
+    {% set item_url = items[4] %}
+    <div class="headerSection">
+        <div class="imageSection">
+            <img src="{{ artist_image }}" alt="artistImage">
+        </div>
+        <div class="artistInfo">
+            <div class="artistName">
+                <h1>{{ artist_name }}</h1>
+            </div>
+            <div class="artistDescription">
+                <div class="artistMinStreamed">
+                    <p>{{ minutes_streamed }} streamed • {{ num_streams }} streams</p>
+                </div>
+                <div class="artistLink">
+                    <a href="{{ item_url }}" target="_blank">View on Spotify</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

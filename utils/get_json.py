@@ -1,12 +1,10 @@
 from utils.models import Song
-from itertools import chain
 
 
 def get_json(dict_of_json_data):
     info_needed_for_user = { }
-    potential_song_lists = { }
     all_songs_in_parts = []
-    all_songs_in_one = []
+
     for json_data in dict_of_json_data:
         if json_data in ['Follow.json', 'MyData/Follow.json']:
             info_needed_for_user["followers"] = dict_of_json_data[json_data]['followerCount']
@@ -46,32 +44,21 @@ def get_json(dict_of_json_data):
                                ]:
                 continue
             else:
-                potential_song_lists[json_data] = dict_of_json_data[json_data]
+                songs = dict_of_json_data[json_data]
+                for song in songs:
+                    if song['episode_name'] or not song['spotify_track_uri']:
+                        continue
+                    else:
+                        all_songs_in_parts.append(
+                                Song(
+                                        name=song['master_metadata_track_name'],
+                                        artist=song['master_metadata_album_artist_name'],
+                                        album=song['master_metadata_album_album_name'],
+                                        uri=song['spotify_track_uri'],
+                                        duration=song['ms_played'],
+                                        time=song['ts']
+                                )
+                        )
 
-    all_songs_in_parts = [
-        create_song_classes(song)
-        for song in potential_song_lists.values()
-    ]
-    all_songs_in_one = list(chain.from_iterable(all_songs_in_parts))
-
-    print(len(all_songs_in_one))
-    return info_needed_for_user, all_songs_in_one
-
-
-def create_song_classes(songs) -> list[Song]:
-    song_classes = []
-    for song in songs:
-        if song['episode_name'] or not song['spotify_track_uri']:
-            continue
-        else:
-            song_classes.append(
-                    Song(
-                            name=song['master_metadata_track_name'],
-                            artist=song['master_metadata_album_artist_name'],
-                            album=song['master_metadata_album_album_name'],
-                            uri=song['spotify_track_uri'],
-                            duration=song['ms_played'],
-                            time=song['ts']
-                    )
-            )
-    return song_classes
+    print(len(all_songs_in_parts))
+    return info_needed_for_user, all_songs_in_parts

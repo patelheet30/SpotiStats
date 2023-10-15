@@ -149,9 +149,10 @@ def get_content():
                 item_info = sp.artist(item_id)
                 if item_info['images']:
                     item_image = item_info['images'][0]['url']
-                    top_items_with_images.append((item[0], item[1], item[2], item_image))
+                    item_url = item_info['external_urls']['spotify']
+                    top_items_with_images.append((item[0], item[1], item[2], item_image, item_url))
                 else:
-                    top_items_with_images.append((item[0], item[1], item[2], ''))
+                    top_items_with_images.append((item[0], item[1], item[2], '', ''))
 
     else:
         for song in all_the_songs:
@@ -174,12 +175,19 @@ def get_content():
                 item_info = sp.album(item_id)
                 if item_info['images']:
                     item_image = item_info['images'][0]['url']
-                    top_items_with_images.append((item[0], item[1], item[2], item_image))
+                    item_url = item_info['external_urls']['spotify']
+                    top_items_with_images.append((item[0], item[1], item[2], item_image, item_url))
                 else:
-                    top_items_with_images.append((item[0], item[1], item[2], ''))
+                    top_items_with_images.append((item[0], item[1], item[2], '', ''))
 
     return render_template('items.html', items=top_items_with_images)
 
+
+@app.route('/get_the_info', methods=['POST'])
+def handle_click():
+    click_info = request.json['click_info']
+
+    return render_template('rightContainer.html', items=click_info)
 
 
 @app.route('/songs')

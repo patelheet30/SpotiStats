@@ -20,7 +20,7 @@ body {
     flex: 3;
     overflow-y: auto;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 20px;
     background-color: rgb(18, 18, 18);
     border-radius: 10px;
     margin-left: 10px;
@@ -222,4 +222,58 @@ body {
   100% {
     opacity: 0;
   }
+}
+
+.headerSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.headerSection img {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    margin-right: 30px;
+}
+
+.headerSection p {
+    font-family: 'CircularSpotifyLight', Circular, sans-serif;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    margin-bottom: 10px;
+}
+
+.headerSection h1 {
+    font-family: 'CircularSpotifyBold', Circular, sans-serif;
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    margin-bottom: 0;
+}
+
+.artistInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.artistDescription {
+    display: flex;
+    flex-direction: column;
+}
+
+.artistDescription a {
+    font-family: 'CircularSpotifyLight', Circular, sans-serif;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+.artistDescription a:hover {
+    text-decoration: underline;
+}
+
+.artistLink a:visited {
+    color: rgb(255, 255, 255);
 }

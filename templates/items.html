@@ -1,5 +1,5 @@
 {% for item in items %}
-    <button class="artistButton" onclick="buttonClicked(this)">
+    <button class="artistButton" onclick="buttonClicked(this)" data-info='{{ item | tojson | safe }}'>
         <div class="buttonInfo">
             <div class="imageContainer">
                 <img src="{{ item[3] }}" alt="Artist Image" class="artistImage">

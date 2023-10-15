@@ -70,7 +70,6 @@ Array.from(buttons).forEach(button => {
 });
 
 function updateContentSection() {
-    console.log("Updating content section");
     let contentContainer = document.getElementById("content-section2");
     let loadingElement = document.getElementById("loading");
 
@@ -82,7 +81,6 @@ function updateContentSection() {
     let isAnyButtonSelected = false;
 
     for (let id in buttonStates) {
-        console.log(id, buttonStates[id])
         if (buttonStates[id]) {
             isAnyButtonSelected = true;
             if(contentContainer) {
@@ -102,7 +100,6 @@ function updateContentSection() {
             })
             .then(response => response.text())
             .then(data => {
-                console.log(data);
                 if(contentContainer) {
                     contentContainer.innerHTML = data;
                 }
@@ -137,6 +134,26 @@ function buttonClicked(button) {
         buttons[i].classList.remove('clicked');
     }
     button.classList.toggle('clicked')
+
+    const info = JSON.parse(button.getAttribute('data-info'));
+
+    // Ajax call to Flask server
+    fetch('/get_the_info', {
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            click_info:info
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        const rightContainer = document.getElementsByClassName("right-container")[0];
+        if(rightContainer) {
+            rightContainer.innerHTML = data;
+        }
+    });
 }
 
 updateResetButtonVisibility();
