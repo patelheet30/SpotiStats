@@ -4,4 +4,4 @@ gunicorn==21.2.0
 python-dotenv==1.0.0
 spotipy==2.23.0
 Werkzeug==2.3.7
-urllib3==1.26.6
+urllib3==1.26.17
