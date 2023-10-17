@@ -4,25 +4,36 @@ let resetButton = document.getElementById("reset");
 let buttonStates = {
     "button1": false,
     "button2": false,
+    "button3": false,
 }
 
 function updateResetButtonVisibility() {
     let button1 = document.getElementById('button1');
     let button2 = document.getElementById('button2');
+    let button3 = document.getElementById('button3');
 
     if (buttonStates["button1"]) {
         button2.style.display = "none";
+        button3.style.display = "none";
         resetButton.style.display = "inline-block";
     }
 
     else if (buttonStates["button2"]) {
         button1.style.display = "none";
+        button3.style.display = "none";
         resetButton.style.display = "inline-block";
     }
+
+        else if (buttonStates["button3"]) {
+            button1.style.display = "none";
+            button2.style.display = "none";
+            resetButton.style.display = "inline-block";
+        }
 
     else {
         button1.style.display = "inline-block";
         button2.style.display = "inline-block";
+        button3.style.display = "inline-block";
         resetButton.style.display = "none";
     }
 }
@@ -48,12 +59,15 @@ Array.from(buttons).forEach(button => {
             let wasSelected = buttonStates[id];
 
             for (let key in buttonStates) {
-                buttonStates[key] = false;
-                let currentButton = document.getElementById(key);
-                if(currentButton){
-                    currentButton.style.backgroundColor = "";
-                    currentButton.style.color = "";
+                if (key !== "button3") {
+                    buttonStates[key] = false;
+                    let currentButton = document.getElementById(key);
+                    if(currentButton){
+                        currentButton.style.backgroundColor = "";
+                        currentButton.style.color = "";
+                    }
                 }
+
             }
 
 
@@ -81,7 +95,7 @@ function updateContentSection() {
     let isAnyButtonSelected = false;
 
     for (let id in buttonStates) {
-        if (buttonStates[id]) {
+        if (id !== "button3" && buttonStates[id]) {
             isAnyButtonSelected = true;
             if(contentContainer) {
                 contentContainer.style.display = "block";

@@ -118,11 +118,11 @@ def success_page():
 def get_content():
     content_type = request.json.get('content_type', '')
     if content_type not in ['artists', 'albums']:
-        return jsonify({ 'Error': 'Invalid value for content_type' }), 400
+        return jsonify({'Error': 'Invalid value for content_type'}), 400
 
     num_items = request.json.get('num_items', '')
     if not num_items.isnumeric() or int(num_items) <= 0:
-        return jsonify({ 'Error': 'Invalid value for num_items' }), 400
+        return jsonify({'Error': 'Invalid value for num_items'}), 400
 
     num_items = int(num_items)
     all_the_songs = session['user-info'][1]
@@ -134,7 +134,7 @@ def get_content():
                 duration_dict[song.artist]['duration'] += int(song.duration) / 60000
                 duration_dict[song.artist]['count'] += 1
             else:
-                duration_dict[song.artist] = { 'duration': int(song.duration) / 60000, 'count': 1 }
+                duration_dict[song.artist] = {'duration': int(song.duration) / 60000, 'count': 1}
 
         top_items_by_duration = sorted(duration_dict.items(), key=lambda item: item[1]['duration'], reverse=True)[
                                 :num_items]
@@ -160,7 +160,7 @@ def get_content():
                 duration_dict[song.album]['duration'] += int(song.duration) / 60000
                 duration_dict[song.album]['count'] += 1
             else:
-                duration_dict[song.album] = { 'duration': int(song.duration) / 60000, 'count': 1 }
+                duration_dict[song.album] = {'duration': int(song.duration) / 60000, 'count': 1}
 
         top_items_by_duration = sorted(duration_dict.items(), key=lambda item: item[1]['duration'], reverse=True)[
                                 :num_items]
@@ -192,8 +192,8 @@ def handle_click():
 
 @app.route('/songs')
 def songs():
-    songs = [song.to_dict() for song in session['user-info'][1]]
-    return jsonify(songs)
+    songs_to_get = [song.to_dict() for song in session['user-info'][1]]
+    return jsonify(songs_to_get)
 
 
 @app.route('/privacy')

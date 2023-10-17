@@ -4,22 +4,27 @@
     {% set minutes_streamed = items[1] %}
     {% set num_streams = items[2] %}
     {% set item_url = items[4] %}
-    <div class="headerSection">
-        <div class="imageSection">
-            <img src="{{ artist_image }}" alt="artistImage">
-        </div>
-        <div class="artistInfo">
-            <div class="artistName">
-                <h1>{{ artist_name }}</h1>
+    <div class="titleSection">
+        <div class="headerSection">
+            <div class="imageSection">
+                <img src="{{ artist_image }}" alt="artistImage">
             </div>
-            <div class="artistDescription">
-                <div class="artistMinStreamed">
-                    <p>{{ minutes_streamed }} streamed • {{ num_streams }} streams</p>
+            <div class="artistInfo">
+                <div class="artistName">
+                    <h1>{{ artist_name }}</h1>
                 </div>
-                <div class="artistLink">
-                    <a href="{{ item_url }}" target="_blank" rel="noopener noreferrer">View on Spotify</a>
+                <div class="artistDescription">
+                    <div class="artistMinStreamed">
+                        <p>{{ minutes_streamed }} streamed • {{ num_streams }} streams</p>
+                    </div>
+                    <div class="artistLink">
+                        <a href="{{ item_url }}" target="_blank" rel="noopener noreferrer">View on Spotify</a>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="infoSection">
+        <p>Testing</p>
     </div>
 {% endif %}
